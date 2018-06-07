@@ -1,0 +1,52 @@
+/* You can add global styles to this file, and also import other style files */
+// 歷程軌跡圖
+.draw-line {
+  color: black;
+  height: 1px;
+  background-color: black;
+  transform-origin: 0 0;
+  position: absolute;
+  text-align: end;
+}
+
+.draw-point {
+  $pointWidth: 20px;
+  border: white 1px solid;
+  width: $pointWidth;
+  height: $pointWidth;
+  position: absolute;
+  background-color: white;
+  z-index: 999;
+  .content {
+    position: relative;
+    top: $pointWidth / 2;
+    left: -$pointWidth;
+    font-size: 80%;
+    background-color: white;
+  }
+  &.sm {
+    width: $pointWidth / 2;
+    height: $pointWidth / 2;
+    .content {
+      display: none;
+    }
+    &:hover {
+      .content {
+        display: inline;
+      }
+    }
+  }
+}
+
+.draw-arrow {
+  $arrowWidth: 20px;
+  display: inline-block;
+  width: $arrowWidth;
+  height: 1px;
+  transform-origin: 0 0;
+  position: absolute;
+  background: black;
+  &.left {
+    width: $arrowWidth + 1;
+  }
+}

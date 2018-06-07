@@ -1,0 +1,66 @@
+// 矩陣
+.center {
+  font-size: 0;
+  text-align: center;
+  .title {
+    padding: 10px;
+  }
+  .left,
+  .right {
+    div {
+      text-align: center;
+    }
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .left {
+    font-size: 1rem;
+    writing-mode: vertical-rl;
+  }
+  .right {
+    font-size: 1rem;
+  }
+  .odds,
+  .critical {
+    background: #979797;
+    font-weight: bold;
+    &.selected {
+      color: white;
+      background: lightblue;
+    }
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    thead {
+      text-align: center;
+    }
+  }
+  th {
+    background: #979797;
+    font-weight: bold;
+  }
+  td,
+  th {
+    padding: 6px;
+    border: 3px solid #fff;
+    text-align: center;
+    height: 80px;
+    width: 80px;
+  }
+  td span {
+    &.p1 {
+      color: white;
+      margin-top: 10px;
+    }
+    &.p2 {
+      color: white;
+    }
+  }
+}
+.connection-line {
+  width: 100%;
+  color: black;
+  height: 1px;
+  background-color: black;
+}
