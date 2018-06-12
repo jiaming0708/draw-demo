@@ -1,22 +1,23 @@
 <div class="center" *ngIf="!!matrix">
   <div class="right matrix">
-    <table class="responsive-table-input-matrix">
-      <thead>
-        <tr>
-          <th></th>
-          <th *ngFor="let cr of matrix.criticals" class="critical">{{ cr.code }}</th>
-        </tr>
-      </thead>
-      <tbody style="position:relative;">
-        <tr *ngFor="let ps of matrix.odds;index as i">
-          <td class="odds">{{ ps.code }}</td>
-          <td *ngFor="let cr of matrix.criticals;index as j" [ngStyle]="{'background-color': matrix.matrix[i][j].colorCode}" class="risk">
-            <div [id]="ps.matrixLevel + '-' + cr.matrixLevel" #point>
-              {{ matrix.matrix[i][j].matrixLevel }} </div>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-    <app-trajectory [data]="records"></app-trajectory>
+    <app-trajectory [data]="records">
+      <table class="responsive-table-input-matrix">
+        <thead>
+          <tr>
+            <th></th>
+            <th *ngFor="let cr of matrix.criticals" class="critical">{{ cr.code }}</th>
+          </tr>
+        </thead>
+        <tbody style="position:relative;">
+          <tr *ngFor="let ps of matrix.odds;index as i">
+            <td class="odds">{{ ps.code }}</td>
+            <td *ngFor="let cr of matrix.criticals;index as j" [ngStyle]="{'background-color': matrix.matrix[i][j].colorCode}" class="risk">
+              <div [id]="ps.matrixLevel + '-' + cr.matrixLevel" #point>
+                {{ matrix.matrix[i][j].matrixLevel }} </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </app-trajectory>
   </div>
 </div>

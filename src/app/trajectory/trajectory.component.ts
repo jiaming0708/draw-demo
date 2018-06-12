@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, ElementRef, Renderer2, HostListener } from '@angular/core';
-import { pairwise, filter, map, toArray } from 'rxjs/operators';
+import { pairwise, filter, map, toArray, switchMap } from 'rxjs/operators';
 import { RiskHistoryRecord } from '../core/risk-history-record';
-import { from } from 'rxjs';
+import { from, of } from 'rxjs';
 import * as $ from 'jquery';
+import { PointData } from '../core/point-data';
+import { PointCount } from '../core/point-count';
 
 @Component({
   selector: 'app-trajectory',
@@ -10,45 +12,63 @@ import * as $ from 'jquery';
   styleUrls: ['./trajectory.component.scss']
 })
 export class TrajectoryComponent {
-  pointCount: any;
-  pointList: any[];
+  pointCount: PointCount[];
+  pointList: PointData[];
   element: HTMLElement;
 
   @Input() set data(val: RiskHistoryRecord[]) {
     if (!!val) {
-      from(val)
+      of(val)
         .pipe(
-          filter(p => !!p.criticalLevel && !!p.oddsLevel),
-          map(p => {
-            return {
-              id: `${p.oddsLevel}-${p.criticalLevel}`,
-              date: p.modifyTime
-            };
-          }),
-          toArray()
+          this.getPointList(),
+          map((points: PointData[]) => {
+            const pointList = points;
+            const pointCount = this.getPointCount(pointList);
+            return { pointList: pointList, pointCount: pointCount };
+          })
         ).subscribe(p => {
-          this.pointList = p.reverse();
-
-          this.draw();
+          this.pointList = p.pointList;
+          this.pointCount = p.pointCount;
         });
     }
   }
 
+  getPointList() {
+    return obs => obs.pipe(
+      switchMap((p: RiskHistoryRecord[]) => p),
+      filter((p: RiskHistoryRecord) => !!p.criticalLevel && !!p.oddsLevel),
+      map((p: RiskHistoryRecord) => ({
+        id: `${p.oddsLevel}-${p.criticalLevel}`,
+        date: p.modifyTime
+      } as PointData)),
+      toArray(),
+      map((p: PointData[]) => p.reverse())
+    );
+  }
+
+  getPointCount(pointList: PointData[]) {
+    // 1.計算每個位置的數量
+    return pointList.reduce((arr, item) => {
+      const id = item.id;
+      if (!arr[id]) {
+        arr[id] = { total: 0, current: 0 } as PointCount;
+      }
+      arr[id].total++;
+      return arr;
+    }, [] as PointCount[]);
+  }
+
   @HostListener('window:resize') onResize() {
-    this.draw();
+    // this.draw();
+  }
+
+  resetCountsCurrentValue() {
+    this.pointCount.forEach(p => p.current = 0);
   }
 
   draw() {
     $(this.element).empty();
-    // 1.計算每個位置的數量
-    this.pointCount = this.pointList.reduce((arr, item) => {
-      const id = item.id;
-      if (!arr[id]) {
-        arr[id] = { total: 0, current: 0 };
-      }
-      arr[id].total++;
-      return arr;
-    }, []);
+    this.resetCountsCurrentValue();
 
     // 2. 先算出全部點位的位置
     const result = this.pointList.map(pointObj => {
