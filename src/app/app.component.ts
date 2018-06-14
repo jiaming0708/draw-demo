@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './core/data.service';
-import { RiskMatrixView } from './core/risk-matrix';
-import { mergeMap, map, delay } from 'rxjs/operators';
-import { RiskHistoryRecord } from './core/risk-history-record';
+import { MatrixView } from './core/matrix-data';
+import { HistoryRecord } from './core/history-record';
 
 @Component({
   selector: 'app-root',
@@ -10,8 +9,8 @@ import { RiskHistoryRecord } from './core/risk-history-record';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  matrix: RiskMatrixView;
-  records: RiskHistoryRecord[];
+  matrix: MatrixView;
+  records: HistoryRecord[];
   ngOnInit(): void {
     this.service
       .getMatrix()

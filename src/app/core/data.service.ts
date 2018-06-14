@@ -2,58 +2,52 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
-  RiskMatrixView,
-  CriticalsEntityOrOddsEntity,
-  RiskLevelEntity,
+  MatrixView,
+  LevelEntityIncludeRisk,
+  LevelEntity,
   ResultsEntity
-} from './risk-matrix';
-import { RiskHistoryRecord } from './risk-history-record';
+} from './matrix-data';
+import { HistoryRecord } from './history-record';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  martixData: RiskMatrixView = {
+  martixData: MatrixView = {
     criticals: [
       {
-        id: '40faeeb5-8cfa-e711-820f-a0afbdeee95d',
         levelType: 1,
         riskLevel: 1,
         matrixLevel: 1,
         code: 'S1'
       },
       {
-        id: 'fcb8debe-8cfa-e711-820f-a0afbdeee95d',
         levelType: 1,
         riskLevel: 1,
         matrixLevel: 2,
         code: 'S2'
       },
       {
-        id: '2b8607c5-8cfa-e711-820f-a0afbdeee95d',
         levelType: 1,
         riskLevel: 1,
         matrixLevel: 3,
         code: 'S3'
       },
       {
-        id: '3a365cd1-8cfa-e711-820f-a0afbdeee95d',
         levelType: 1,
         riskLevel: 1,
         matrixLevel: 4,
         code: 'S4'
       }
-    ] as CriticalsEntityOrOddsEntity[],
+    ] as LevelEntityIncludeRisk[],
     odds: [
       {
-        id: '0edb2df1-8cfa-e711-820f-a0afbdeee95d',
         levelType: 2,
         riskLevel: 1,
         matrixLevel: 1,
         code: 'P1'
       },
       {
-        id: '49f828f7-8cfa-e711-820f-a0afbdeee95d',
         levelType: 2,
         riskLevel: 1,
         matrixLevel: 2,
@@ -73,31 +67,27 @@ export class DataService {
         matrixLevel: 4,
         code: 'P4'
       }
-    ] as CriticalsEntityOrOddsEntity[],
+    ] as LevelEntityIncludeRisk[],
     riskLevel: [
       {
-        id: 'c8654f13-8dfa-e711-820f-a0afbdeee95d',
         levelType: 3,
         matrixLevel: 1,
         code: '1',
         colorCode: '#C2DE9D'
       },
       {
-        id: 'c9654f13-8dfa-e711-820f-a0afbdeee95d',
         levelType: 3,
         matrixLevel: 2,
         code: '2',
         colorCode: '#82B6BF'
       },
       {
-        id: '151f2c24-8dfa-e711-820f-a0afbdeee95d',
         levelType: 3,
         matrixLevel: 3,
         code: '3',
         colorCode: '#F0DAB6'
       },
       {
-        id: '161f2c24-8dfa-e711-820f-a0afbdeee95d',
         levelType: 3,
         riskLevel: 3,
         matrixLevel: 4,
@@ -105,14 +95,13 @@ export class DataService {
         colorCode: '#D697A7'
       },
       {
-        id: '171f2c24-8dfa-e711-820f-a0afbdeee95d',
         levelType: 3,
         riskLevel: 3,
         matrixLevel: 5,
         code: '5',
         colorCode: '#E1443A'
       }
-    ] as RiskLevelEntity[],
+    ] as LevelEntity[],
     results: [
       { levelCompose: '1-1', matrixLevel: 1, colorCode: '#C2DE9D' },
       { levelCompose: '1-2', matrixLevel: 2, colorCode: '#82B6BF' },
@@ -131,11 +120,10 @@ export class DataService {
       { levelCompose: '4-3', matrixLevel: 4, colorCode: '#D697A7' },
       { levelCompose: '4-4', matrixLevel: 5, colorCode: '#E1443A' }
     ] as ResultsEntity[]
-  } as RiskMatrixView;
+  } as MatrixView;
 
   historyData = [
     {
-      id: '9b8cd93f-a31b-e811-80c2-00155db05917',
       dbVersion: null,
       modifyTime: '2018/03/27',
       modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
@@ -143,16 +131,15 @@ export class DataService {
       oddsLevel: 4
     },
     {
-      id: 'd040275c-bb17-e811-80c2-000d3a8024db',
       dbVersion: null,
       modifyTime: '2018/02/27',
       modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
       criticalLevel: 3,
       oddsLevel: 3
     }
-  ] as RiskHistoryRecord[];
+  ] as HistoryRecord[];
 
-  getMatrix(): Observable<RiskMatrixView> {
+  getMatrix(): Observable<MatrixView> {
     return of(this.martixData).pipe(
       map(matrix => {
         matrix.criticals = matrix.criticals.sort(
@@ -176,7 +163,7 @@ export class DataService {
     );
   }
 
-  getHistory(): Observable<RiskHistoryRecord[]> {
+  getHistory(): Observable<HistoryRecord[]> {
     return of(this.historyData);
   }
   constructor() {}

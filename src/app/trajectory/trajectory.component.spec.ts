@@ -1,8 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { TrajectoryComponent } from './trajectory.component';
-import { RiskHistoryRecord } from '../core/risk-history-record';
-import { COMPONENT_VARIABLE } from '@angular/platform-browser/src/dom/dom_renderer';
+import { HistoryRecord } from '../core/history-record';
 import { PointData } from '../core/point-data';
 import { PointCount } from '../core/point-count';
 
@@ -31,7 +30,6 @@ describe('TrajectoryComponent', () => {
 
     const historyData = [
       {
-        id: '9b8cd93f-a31b-e811-80c2-00155db05917',
         dbVersion: null,
         modifyTime: '2018/03/27',
         modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
@@ -39,14 +37,13 @@ describe('TrajectoryComponent', () => {
         oddsLevel: 4
       },
       {
-        id: 'd040275c-bb17-e811-80c2-000d3a8024db',
         dbVersion: null,
         modifyTime: '2018/02/27',
         modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
         criticalLevel: 3,
         oddsLevel: 3
       }
-    ] as RiskHistoryRecord[];
+    ] as HistoryRecord[];
     component.data = historyData;
     const expectedList = [
       { id: '3-3', date: '2018/02/27' },

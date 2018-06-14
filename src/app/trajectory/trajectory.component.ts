@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, ElementRef, Renderer2, HostListener } from '@angular/core';
 import { pairwise, filter, map, toArray, switchMap } from 'rxjs/operators';
-import { RiskHistoryRecord } from '../core/risk-history-record';
+import { HistoryRecord } from '../core/history-record';
 import { from, of } from 'rxjs';
 import * as $ from 'jquery';
 import { PointData } from '../core/point-data';
@@ -16,7 +16,7 @@ export class TrajectoryComponent {
   pointList: PointData[];
   element: HTMLElement;
 
-  @Input() set data(val: RiskHistoryRecord[]) {
+  @Input() set data(val: HistoryRecord[]) {
     if (!!val) {
       of(val)
         .pipe(
@@ -35,9 +35,9 @@ export class TrajectoryComponent {
 
   getPointList() {
     return obs => obs.pipe(
-      switchMap((p: RiskHistoryRecord[]) => p),
-      filter((p: RiskHistoryRecord) => !!p.criticalLevel && !!p.oddsLevel),
-      map((p: RiskHistoryRecord) => ({
+      switchMap((p: HistoryRecord[]) => p),
+      filter((p: HistoryRecord) => !!p.criticalLevel && !!p.oddsLevel),
+      map((p: HistoryRecord) => ({
         id: `${p.oddsLevel}-${p.criticalLevel}`,
         date: p.modifyTime
       } as PointData)),

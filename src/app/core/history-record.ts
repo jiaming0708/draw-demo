@@ -1,5 +1,4 @@
-export interface RiskHistoryRecord {
-  id: string;
+export interface HistoryRecord {
   dbVersion?: null;
   modifyTime: string;
   modifyUserId?: null;
