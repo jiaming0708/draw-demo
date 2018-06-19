@@ -1,6 +1,6 @@
 <div class="center" *ngIf="!!matrix">
   <div class="right matrix">
-    <app-trajectory [data]="records">
+    <app-trajectory [data]="records" (pointListChange)="pointListChange($event)">
       <table class="responsive-table-input-matrix">
         <thead>
           <tr>
@@ -12,8 +12,7 @@
           <tr *ngFor="let ps of matrix.odds;index as i">
             <td class="odds">{{ ps.code }}</td>
             <td *ngFor="let cr of matrix.criticals;index as j" [ngStyle]="{'background-color': matrix.matrix[i][j].colorCode}" class="risk">
-              <div [id]="ps.matrixLevel + '-' + cr.matrixLevel" #point>
-                {{ matrix.matrix[i][j].matrixLevel }} </div>
+              <app-level-block [id]="ps.matrixLevel + '-' + cr.matrixLevel" [matrix]="matrix.matrix[i][j]"></app-level-block>
             </td>
           </tr>
         </tbody>

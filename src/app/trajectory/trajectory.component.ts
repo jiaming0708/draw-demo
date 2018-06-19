@@ -1,10 +1,22 @@
-import { Component, OnInit, Input, ElementRef, Renderer2, HostListener } from '@angular/core';
+import {
+  Component,
+  Input,
+  ElementRef,
+  Renderer2,
+  HostListener,
+  QueryList,
+  ContentChildren,
+  Output,
+  EventEmitter
+} from '@angular/core';
 import { pairwise, filter, map, toArray, switchMap } from 'rxjs/operators';
 import { HistoryRecord } from '../core/history-record';
 import { from, of } from 'rxjs';
 import * as $ from 'jquery';
 import { PointData } from '../core/point-data';
 import { PointCount } from '../core/point-count';
+import { LevelBlockDirective } from '../level-block.directive';
+import { DataService } from '../core/data.service';
 
 @Component({
   selector: 'app-trajectory',
@@ -15,6 +27,8 @@ export class TrajectoryComponent {
   pointCount: PointCount[];
   pointList: PointData[];
   element: HTMLElement;
+  @Output() pointListChange = new EventEmitter();
+  @ContentChildren(LevelBlockDirective, {descendants: true}) levelBlocks: QueryList<LevelBlockDirective>;
 
   @Input() set data(val: HistoryRecord[]) {
     if (!!val) {
@@ -29,6 +43,8 @@ export class TrajectoryComponent {
         ).subscribe(p => {
           this.pointList = p.pointList;
           this.pointCount = p.pointCount;
+          console.log(this.pointList);
+          this.service.pointList.next(this.pointList);
         });
     }
   }
@@ -42,7 +58,11 @@ export class TrajectoryComponent {
         date: p.modifyTime
       } as PointData)),
       toArray(),
-      map((p: PointData[]) => p.reverse())
+      map((p: PointData[]) => p.reverse()),
+      map((p: PointData[]) => {
+        p.forEach((data, idx) => data.order = idx);
+        return p;
+      })
     );
   }
 
@@ -67,7 +87,7 @@ export class TrajectoryComponent {
   }
 
   draw() {
-    $(this.element).empty();
+    // $(this.element).empty();
     this.resetCountsCurrentValue();
 
     // 2. 先算出全部點位的位置
@@ -127,16 +147,16 @@ export class TrajectoryComponent {
       this.renderer.appendChild(this.element, line);
 
       // arrow
-      const arrowPosition = this.calArrowPosition(angle, data['1']);
-      const arrowRight = document.createElement('div');
-      $(arrowRight).addClass('draw-arrow');
-      $(arrowRight).css({ top: arrowPosition.top, left: arrowPosition.left, transform: `rotate(${angle + 145}deg)` });
-      this.renderer.appendChild(this.element, arrowRight);
+      // const arrowPosition = this.calArrowPosition(angle, data['1']);
+      // const arrowRight = document.createElement('div');
+      // $(arrowRight).addClass('draw-arrow');
+      // $(arrowRight).css({ top: arrowPosition.top, left: arrowPosition.left, transform: `rotate(${angle + 145}deg)` });
+      // this.renderer.appendChild(this.element, arrowRight);
 
-      const arrowLeft = document.createElement('div');
-      $(arrowLeft).addClass('draw-arrow left');
-      $(arrowLeft).css({ top: arrowPosition.top, left: arrowPosition.left, transform: `rotate(${angle - 145}deg)` });
-      this.renderer.appendChild(this.element, arrowLeft);
+      // const arrowLeft = document.createElement('div');
+      // $(arrowLeft).addClass('draw-arrow left');
+      // $(arrowLeft).css({ top: arrowPosition.top, left: arrowPosition.left, transform: `rotate(${angle - 145}deg)` });
+      // this.renderer.appendChild(this.element, arrowLeft);
     });
   }
   lineDistance(x, y, x0, y0) {
@@ -144,7 +164,7 @@ export class TrajectoryComponent {
     const h = y - y0;
     return Math.sqrt(w * w + h * h);
   }
-  calArrowPosition(angle: number, point: any) {
+  calArrowPosition(point: any) {
     // angle -= 180;
 
     // const r = 10;
@@ -153,9 +173,9 @@ export class TrajectoryComponent {
     // const left = point.left + r * Math.cos(d);
 
     return { top: point.top, left: point.left };
-   }
+  }
 
-  constructor(elRef: ElementRef, private renderer: Renderer2) {
+  constructor(elRef: ElementRef, private renderer: Renderer2, private service: DataService) {
     this.element = elRef.nativeElement;
    }
 }
