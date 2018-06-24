@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of, Subject } from 'rxjs';
+import { Observable, of, Subject, BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   MatrixView,
@@ -9,6 +9,7 @@ import {
 } from './matrix-data';
 import { HistoryRecord } from './history-record';
 import { PointData } from './point-data';
+import { PointCount } from './point-count';
 
 @Injectable({
   providedIn: 'root'
@@ -141,6 +142,7 @@ export class DataService {
   ] as HistoryRecord[];
 
   pointList = new Subject<PointData[]>();
+  pointCount = new BehaviorSubject<PointCount[]>([]);
 
   getMatrix(): Observable<MatrixView> {
     return of(this.martixData).pipe(

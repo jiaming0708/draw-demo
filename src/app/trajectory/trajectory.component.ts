@@ -43,8 +43,8 @@ export class TrajectoryComponent {
         ).subscribe(p => {
           this.pointList = p.pointList;
           this.pointCount = p.pointCount;
-          console.log(this.pointList);
           this.service.pointList.next(this.pointList);
+          this.service.pointCount.next(this.pointCount);
         });
     }
   }
