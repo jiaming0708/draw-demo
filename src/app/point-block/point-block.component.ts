@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, Host, Optional, AfterViewInit, HostBinding, ElementRef } from '@angular/core';
+import { Component, OnInit, Input, Host, Optional, AfterViewInit, HostBinding, ElementRef, Output, EventEmitter } from '@angular/core';
 import { PointData } from '../core/point-data';
 import { LevelBlockComponent } from '../level-block/level-block.component';
 import { DataService } from '../core/data.service';
@@ -12,16 +12,16 @@ import { Point } from '../core/point';
   styleUrls: ['./point-block.component.scss']
 })
 export class PointBlockComponent implements AfterViewInit {
-  @Input() point: PointData;
-  @HostBinding('class.draw-point') isDrawPoint = true;
+  elm: HTMLElement;
+  text: number;
   @HostBinding('class.sm') isSmall: boolean;
   @HostBinding('style.top.px') top: number;
   @HostBinding('style.left.px') left: number;
-  elm: HTMLElement;
-  text: number;
+  @Input() point: PointData;
 
   ngAfterViewInit() {
     this.elm = this.elmRef.nativeElement;
+    this.elm.classList.add('draw-point');
 
     this.service.pointCount
       .pipe(
@@ -48,6 +48,11 @@ export class PointBlockComponent implements AfterViewInit {
     setTimeout(() => {
       this.top = point.top;
       this.left = point.left;
+
+      this.service.elementPoint$.next({
+        ...point,
+        order: this.point.order
+      });
     });
   }
 

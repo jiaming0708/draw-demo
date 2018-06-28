@@ -7,23 +7,25 @@ import {
   QueryList,
   ContentChildren,
   Output,
-  EventEmitter
+  EventEmitter,
+  AfterViewInit
 } from '@angular/core';
-import { pairwise, filter, map, toArray, switchMap } from 'rxjs/operators';
+import { pairwise, filter, map, toArray, switchMap, takeUntil, take, mergeMap, tap, last, scan, concatMap, concat } from 'rxjs/operators';
 import { HistoryRecord } from '../core/history-record';
-import { from, of } from 'rxjs';
+import { from, of, merge } from 'rxjs';
 import * as $ from 'jquery';
 import { PointData } from '../core/point-data';
 import { PointCount } from '../core/point-count';
 import { LevelBlockDirective } from '../level-block.directive';
 import { DataService } from '../core/data.service';
+import { ElementPoint } from '../core/element-point';
 
 @Component({
   selector: 'app-trajectory',
   templateUrl: './trajectory.component.html',
   styleUrls: ['./trajectory.component.scss']
 })
-export class TrajectoryComponent {
+export class TrajectoryComponent implements AfterViewInit {
   pointCount: PointCount[];
   pointList: PointData[];
   element: HTMLElement;
@@ -173,6 +175,17 @@ export class TrajectoryComponent {
     // const left = point.left + r * Math.cos(d);
 
     return { top: point.top, left: point.left };
+  }
+
+  ngAfterViewInit() {
+    this.service.elementPoint$
+      .pipe(
+        scan((acc: ElementPoint[], val: ElementPoint) => [...acc, val], []),
+        filter(p => p.length === this.pointList.length),
+        switchMap(p => p.sort((a, b) => a.order - b.order)),
+        pairwise()
+      )
+      .subscribe(p => console.log(p));
   }
 
   constructor(elRef: ElementRef, private renderer: Renderer2, private service: DataService) {

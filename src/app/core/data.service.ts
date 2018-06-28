@@ -10,6 +10,7 @@ import {
 import { HistoryRecord } from './history-record';
 import { PointData } from './point-data';
 import { PointCount } from './point-count';
+import { ElementPoint } from './element-point';
 
 @Injectable({
   providedIn: 'root'
@@ -143,6 +144,7 @@ export class DataService {
 
   pointList = new Subject<PointData[]>();
   pointCount = new BehaviorSubject<PointCount[]>([]);
+  elementPoint$ = new Subject<ElementPoint>();
 
   getMatrix(): Observable<MatrixView> {
     return of(this.martixData).pipe(
