@@ -1,8 +1,15 @@
-import { Component, OnInit, Input, Host, Optional, AfterViewInit, HostBinding, ElementRef, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  Input,
+  Host,
+  AfterViewInit,
+  HostBinding,
+  ElementRef
+} from '@angular/core';
 import { PointData } from '../core/point-data';
 import { LevelBlockComponent } from '../level-block/level-block.component';
 import { DataService } from '../core/data.service';
-import { map, tap } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import { PointCount } from '../core/point-count';
 import { Point } from '../core/point';
 
@@ -48,12 +55,17 @@ export class PointBlockComponent implements AfterViewInit {
     setTimeout(() => {
       this.top = point.top;
       this.left = point.left;
-
-      this.service.elementPoint$.next({
-        ...point,
-        order: this.point.order
-      });
     });
+
+    setTimeout(() => {
+      // cuz change detection
+      const rect = this.elm.getBoundingClientRect();
+        this.service.elementPoint$.next({
+          top: rect.top + this.elm.offsetHeight / 2,
+          left: rect.left + this.elm.offsetWidth / 2,
+          order: this.point.order
+        });
+    }, 10);
   }
 
   getPointWithAngle(count: PointCount, point: Point) {
@@ -73,5 +85,7 @@ export class PointBlockComponent implements AfterViewInit {
     });
   }
 
-  constructor(@Host() private parent: LevelBlockComponent, private service: DataService, private elmRef: ElementRef) { }
+  constructor(@Host() private parent: LevelBlockComponent,
+    private service: DataService,
+    private elmRef: ElementRef) { }
 }

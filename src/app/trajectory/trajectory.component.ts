@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { pairwise, filter, map, toArray, switchMap, takeUntil, take, mergeMap, tap, last, scan, concatMap, concat } from 'rxjs/operators';
 import { HistoryRecord } from '../core/history-record';
-import { from, of, merge } from 'rxjs';
+import { from, of, merge, Observable } from 'rxjs';
 import * as $ from 'jquery';
 import { PointData } from '../core/point-data';
 import { PointCount } from '../core/point-count';
@@ -29,6 +29,7 @@ export class TrajectoryComponent implements AfterViewInit {
   pointCount: PointCount[];
   pointList: PointData[];
   element: HTMLElement;
+  linePoints$: Observable<[ElementPoint, ElementPoint][]>;
   @Output() pointListChange = new EventEmitter();
   @ContentChildren(LevelBlockDirective, {descendants: true}) levelBlocks: QueryList<LevelBlockDirective>;
 
@@ -178,14 +179,15 @@ export class TrajectoryComponent implements AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.service.elementPoint$
+    this.linePoints$ = this.service.elementPoint$
       .pipe(
         scan((acc: ElementPoint[], val: ElementPoint) => [...acc, val], []),
         filter(p => p.length === this.pointList.length),
+        take(1),
         switchMap(p => p.sort((a, b) => a.order - b.order)),
-        pairwise()
-      )
-      .subscribe(p => console.log(p));
+        pairwise(),
+        toArray()
+      );
   }
 
   constructor(elRef: ElementRef, private renderer: Renderer2, private service: DataService) {

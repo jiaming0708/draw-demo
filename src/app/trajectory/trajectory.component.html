@@ -1,1 +1,2 @@
 <ng-content></ng-content>
+<app-point-line *ngFor="let item of linePoints$ | async" [points]="item"></app-point-line>

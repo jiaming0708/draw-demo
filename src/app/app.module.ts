@@ -6,6 +6,8 @@ import { TrajectoryComponent } from './trajectory/trajectory.component';
 import { LevelBlockDirective } from './level-block.directive';
 import { PointBlockComponent } from './point-block/point-block.component';
 import { LevelBlockComponent } from './level-block/level-block.component';
+import { PointLineComponent } from './point-line/point-line.component';
+import { LineArrowComponent } from './line-arrow/line-arrow.component';
 
 @NgModule({
   declarations: [
@@ -13,7 +15,9 @@ import { LevelBlockComponent } from './level-block/level-block.component';
     TrajectoryComponent,
     LevelBlockDirective,
     PointBlockComponent,
-    LevelBlockComponent
+    LevelBlockComponent,
+    PointLineComponent,
+    LineArrowComponent
   ],
   imports: [
     BrowserModule
