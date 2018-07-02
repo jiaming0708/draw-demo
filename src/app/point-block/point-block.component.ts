@@ -53,6 +53,7 @@ export class PointBlockComponent implements AfterViewInit {
     }
 
     setTimeout(() => {
+      this.isSmall = count.total > 1;
       this.top = point.top;
       this.left = point.left;
     });
@@ -72,8 +73,8 @@ export class PointBlockComponent implements AfterViewInit {
     const angle = 360 / count.total * ++count.current;
     const r = 30;
     const d = angle * Math.PI / 180;
-    point.top = point.top + r * Math.sin(d) - $(point).height() / 2;
-    point.left = point.left + r * Math.cos(d) - $(point).width() / 2;
+    point.top = point.top + r * Math.sin(d) - this.elm.offsetHeight / 2;
+    point.left = point.left + r * Math.cos(d) - this.elm.offsetWidth / 2;
   }
 
   getPointWithoutAngle(point: Point) {

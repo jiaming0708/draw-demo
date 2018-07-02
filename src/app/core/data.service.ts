@@ -139,6 +139,27 @@ export class DataService {
       modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
       criticalLevel: 3,
       oddsLevel: 3
+    },
+    {
+      dbVersion: null,
+      modifyTime: '2018/01/27',
+      modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
+      criticalLevel: 2,
+      oddsLevel: 2
+    },
+    {
+      dbVersion: null,
+      modifyTime: '2018/04/27',
+      modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
+      criticalLevel: 3,
+      oddsLevel: 3
+    },
+    {
+      dbVersion: null,
+      modifyTime: '2018/03/22',
+      modifyUserId: 'c1a42558-ebf5-e711-80c3-000d3a80a3d3',
+      criticalLevel: 4,
+      oddsLevel: 2
     }
   ] as HistoryRecord[];
 

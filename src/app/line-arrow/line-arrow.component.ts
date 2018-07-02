@@ -15,14 +15,14 @@ export class LineArrowComponent implements AfterViewInit, OnChanges {
   @HostBinding('style.left.px') left: number;
   @HostBinding('style.transform') transform: string;
 
-  getAngle() {
-    return this.angle + (this.isLeft ? -145 : 145);
+  getAngle(): number {
+    return this.isLeft ? -18 : 18;
   }
 
   ngOnChanges() {
     this.isLeft = this.direct === 'left';
-    this.top = -this.point.top;
-    this.left = -this.point.left;
+    this.top = 1;
+    this.left = 1;
     this.transform = `rotate(${this.getAngle()}deg)`;
   }
   ngAfterViewInit() {
