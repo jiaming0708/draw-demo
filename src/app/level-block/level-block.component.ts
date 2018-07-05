@@ -1,8 +1,14 @@
-import { Component, OnInit, Input, HostBinding, AfterViewChecked, AfterViewInit, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  HostBinding,
+  ElementRef,
+  AfterViewInit
+} from '@angular/core';
 import { ResultsEntity } from 'src/app/core/matrix-data';
 import { PointData } from '../core/point-data';
-import { DataService } from '../core/data.service';
-import { filter, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-level-block',
@@ -11,6 +17,7 @@ import { filter, map } from 'rxjs/operators';
 })
 export class LevelBlockComponent implements AfterViewInit {
   @Input() matrix: ResultsEntity;
+  @Input() pointList$: Observable<PointData[]>;
 
   @Input()
   @HostBinding('id')
@@ -20,15 +27,14 @@ export class LevelBlockComponent implements AfterViewInit {
 
   pointList: PointData[];
 
-  constructor(private service: DataService, private elRef: ElementRef) { }
-
   ngAfterViewInit() {
-    this.elm = this.elRef.nativeElement;
-
-    this.service.pointList
+    this.pointList$
       .pipe(
         map(p => p.filter(data => data.id === this.id))
       ).subscribe(p => this.pointList = p);
   }
 
+  constructor(elRef: ElementRef) {
+    this.elm = elRef.nativeElement;
+  }
 }

@@ -1,2 +1,2 @@
 {{ matrix.matrixLevel }}
-<app-point-block [point]="item" *ngFor="let item of pointList"></app-point-block>
+<app-point-block [point]="item" *ngFor="let item of pointList" [matrixLevel]="matrix.matrixLevel" [parentElm]="elm"></app-point-block>

@@ -163,8 +163,8 @@ export class DataService {
     }
   ] as HistoryRecord[];
 
-  pointList = new Subject<PointData[]>();
-  pointCount = new BehaviorSubject<PointCount[]>([]);
+  pointList$ = new Subject<PointData[]>();
+  pointCount$ = new BehaviorSubject<PointCount[]>([]);
   elementPoint$ = new Subject<ElementPoint>();
 
   getMatrix(): Observable<MatrixView> {

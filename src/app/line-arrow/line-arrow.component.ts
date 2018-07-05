@@ -1,4 +1,11 @@
-import { Component, OnInit, ElementRef, OnChanges, Input, HostBinding, SimpleChanges, AfterViewInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  OnChanges,
+  Input,
+  HostBinding
+} from '@angular/core';
 import { ElementPoint } from '../core/element-point';
 
 @Component({
@@ -6,7 +13,7 @@ import { ElementPoint } from '../core/element-point';
   templateUrl: './line-arrow.component.html',
   styleUrls: ['./line-arrow.component.scss']
 })
-export class LineArrowComponent implements AfterViewInit, OnChanges {
+export class LineArrowComponent implements OnInit, OnChanges {
   @Input() direct: 'left' | 'right';
   @Input() point: ElementPoint;
   @Input() angle: number;
@@ -25,7 +32,7 @@ export class LineArrowComponent implements AfterViewInit, OnChanges {
     this.left = 1;
     this.transform = `rotate(${this.getAngle()}deg)`;
   }
-  ngAfterViewInit() {
+  ngOnInit() {
     const elf = this.elRef.nativeElement as HTMLElement;
     elf.classList.add('draw-arrow');
   }

@@ -1,26 +1,28 @@
-import { Component, OnInit, Input, ElementRef, AfterViewInit, HostBinding } from '@angular/core';
+import {
+  Component,
+  Input,
+  ElementRef,
+  HostBinding,
+  OnInit,
+  OnChanges
+} from '@angular/core';
 import { ElementPoint } from '../core/element-point';
-import { hostElement } from '@angular/core/src/render3/instructions';
 
 @Component({
   selector: 'app-point-line',
   templateUrl: './point-line.component.html',
   styleUrls: ['./point-line.component.scss']
 })
-export class PointLineComponent implements AfterViewInit {
+export class PointLineComponent implements OnInit, OnChanges {
   elm: HTMLElement;
-  startPoint: ElementPoint;
-  endPoint: ElementPoint;
   angle: number;
   @HostBinding('style.top.px') top: number;
   @HostBinding('style.left.px') left: number;
   @HostBinding('style.transform') transform: string;
   @HostBinding('style.width.px') width: number;
-  @Input() set points(val: [ElementPoint, ElementPoint]) {
-    this.startPoint = val[0];
-    this.endPoint = val[1];
-    this.drawLine(this.startPoint, this.endPoint);
-  }
+
+  @Input() startPoint: ElementPoint;
+  @Input() endPoint: ElementPoint;
 
   drawLine(start: ElementPoint, end: ElementPoint) {
     this.angle = Math.atan2(start.top - end.top, start.left - end.left) * 180 / Math.PI + 180;
@@ -38,11 +40,16 @@ export class PointLineComponent implements AfterViewInit {
     return Math.sqrt(w * w + h * h);
   }
 
-  ngAfterViewInit() {
-    this.elm = this.elRef.nativeElement;
+  ngOnChanges() {
+    this.drawLine(this.startPoint, this.endPoint);
+  }
+
+  ngOnInit() {
     this.elm.classList.add('draw-line');
   }
 
-  constructor(private elRef: ElementRef) { }
+  constructor(elRef: ElementRef) {
+    this.elm = elRef.nativeElement;
+   }
 
 }

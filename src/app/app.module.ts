@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { TrajectoryComponent } from './trajectory/trajectory.component';
-import { LevelBlockDirective } from './level-block.directive';
 import { PointBlockComponent } from './point-block/point-block.component';
 import { LevelBlockComponent } from './level-block/level-block.component';
 import { PointLineComponent } from './point-line/point-line.component';
@@ -13,7 +12,6 @@ import { LineArrowComponent } from './line-arrow/line-arrow.component';
   declarations: [
     AppComponent,
     TrajectoryComponent,
-    LevelBlockDirective,
     PointBlockComponent,
     LevelBlockComponent,
     PointLineComponent,
